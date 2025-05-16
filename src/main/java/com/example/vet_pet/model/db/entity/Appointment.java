@@ -1,6 +1,7 @@
 package com.example.vet_pet.model.db.entity;
 
 import com.example.vet_pet.model.enums.StatusAppointment;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 

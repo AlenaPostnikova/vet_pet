@@ -4,7 +4,6 @@ import com.example.vet_pet.exeption.CommonBackendException;
 import com.example.vet_pet.model.db.entity.Appointment;
 import com.example.vet_pet.model.db.entity.MedHistory;
 import com.example.vet_pet.model.db.entity.Pet;
-import com.example.vet_pet.model.db.entity.User;
 import com.example.vet_pet.model.db.repository.MedHistoryRepository;
 import com.example.vet_pet.model.dto.request.MedHistoryInfoReq;
 import com.example.vet_pet.model.dto.response.AppointmentInfoResp;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -106,14 +104,5 @@ public class MedHistoryService {
         medHistoryInfoResp.setAppointmentInfoResp(appointmentInfoResp);
 
         return medHistoryInfoResp;
-    }
-
-    public List<MedHistoryInfoResp> getMyPetMedHistory(Long petId){
-
-        Pet pet = petService.getPetFromDB(petId);
-
-        return medHistoryRepository.getPetMedHistory(petId).stream()
-                .map(medHistory -> mapper.convertValue(medHistory, MedHistoryInfoResp.class))
-                .collect(Collectors.toList());
     }
 }
