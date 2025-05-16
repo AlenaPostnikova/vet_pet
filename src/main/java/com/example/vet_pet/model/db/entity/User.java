@@ -2,7 +2,6 @@ package com.example.vet_pet.model.db.entity;
 
 import com.example.vet_pet.model.enums.Gender;
 import com.example.vet_pet.model.enums.Status;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

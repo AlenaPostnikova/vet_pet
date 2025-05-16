@@ -10,8 +10,6 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @Setter
