@@ -9,6 +9,7 @@ import com.example.vet_pet.model.enums.Status;
 import com.example.vet_pet.utils.PaginationUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,13 @@ public class UserService {
         }
     }
 
+    public User getUserFromDB(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        final String errMsg = String.format("User with email: %s not found", email);
+
+        return optionalUser.orElseThrow(() -> new CommonBackendException(errMsg, HttpStatus.NOT_FOUND));
+    }
 
     public User getUserFromDB(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
@@ -61,11 +69,22 @@ public class UserService {
             throw new CommonBackendException("User already exists", HttpStatus.CONFLICT);
         });
 
+        String hashPassword = BCrypt.hashpw(req.getPassword(), BCrypt.gensalt());
+
         User user = mapper.convertValue(req, User.class); //преобразуем запрос в Пользователя-сущность
         user.setStatus(Status.CREATED); //присваиваем статус
+        user.setPassword(hashPassword);
 
         User save = userRepository.save(user); //сохранили в базу данных
         return mapper.convertValue(save, UserInfoResp.class);
+    }
+
+    public void checkPassword(String email, String userPassword) {
+
+        User user = getUserFromDB(email);
+
+        if (!BCrypt.checkpw(userPassword, user.getPassword()))
+            throw new CommonBackendException("Secret is incorrect", HttpStatus.FORBIDDEN);
     }
 
 

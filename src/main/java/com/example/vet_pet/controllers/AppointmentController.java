@@ -4,15 +4,19 @@ package com.example.vet_pet.controllers;
 import com.example.vet_pet.model.dto.response.AppointmentInfoResp;
 import com.example.vet_pet.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @RestController
 @RequestMapping("/appointment")
 @RequiredArgsConstructor
+@SecurityRequirement(name = AUTHORIZATION)
 @Tag(name = "Запись на прием")
 public class AppointmentController {
 

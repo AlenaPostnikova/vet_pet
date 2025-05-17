@@ -5,15 +5,20 @@ import com.example.vet_pet.model.dto.request.PetInfoReq;
 import com.example.vet_pet.model.dto.response.PetInfoResp;
 import com.example.vet_pet.service.PetService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @RestController
 @RequestMapping("/pet")
 @RequiredArgsConstructor
+@SecurityRequirement(name = AUTHORIZATION)
 @Tag(name = "Питомцы")
 public class PetController {
     private final PetService petService;
@@ -38,6 +43,7 @@ public class PetController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить питомца по id")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deletePet(@PathVariable Long id){
         petService.deletePet(id);
     }

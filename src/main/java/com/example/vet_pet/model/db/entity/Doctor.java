@@ -1,6 +1,7 @@
 package com.example.vet_pet.model.db.entity;
 
 import com.example.vet_pet.model.enums.Gender;
+import com.example.vet_pet.model.enums.Roles;
 import com.example.vet_pet.model.enums.SpecializationDoctor;
 import com.example.vet_pet.model.enums.Status;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -52,6 +53,10 @@ public class Doctor {
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Roles role;
 
     @CreationTimestamp
     @Column(name = "created_at")

@@ -5,16 +5,21 @@ import com.example.vet_pet.model.dto.request.UserInfoReq;
 import com.example.vet_pet.model.dto.response.UserInfoResp;
 import com.example.vet_pet.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@SecurityRequirement(name = AUTHORIZATION)
 @Tag(name = "Пользователи")
 public class UserController {
     private final UserService userService;
@@ -27,6 +32,7 @@ public class UserController {
 
         @PostMapping
         @Operation(summary = "Создать пользователя")
+        @PreAuthorize("hasAuthority('ROLE_ADMIN')")
         public UserInfoResp addUser(@RequestBody UserInfoReq req){
             return userService.addUser(req);
         }

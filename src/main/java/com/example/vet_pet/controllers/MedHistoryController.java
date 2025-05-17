@@ -6,11 +6,13 @@ import com.example.vet_pet.service.MedHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/medHistory")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
 @Tag(name = "Истории болезни питомцев")
 public class MedHistoryController {
     private final MedHistoryService medHistoryService;
@@ -26,8 +28,6 @@ public class MedHistoryController {
     public MedHistoryInfoResp linkMedHistoryAndPet(@PathVariable Long medHistoryId, @PathVariable Long petId) {
         return medHistoryService.linkMedHistoryAndPet(medHistoryId, petId);
     }
-
-
 
     @PostMapping("/linkMedHistoryAndAppointment/{medHistoryId}/{appointmentId}")
     @Operation(summary = "Прикрепить историю болезни к записи на прием по id")
