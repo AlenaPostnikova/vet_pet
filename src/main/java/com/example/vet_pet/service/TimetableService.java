@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -35,13 +36,6 @@ public class TimetableService {
     private final TimetableRepository timetableRepository;
     private final DoctorService doctorService;
 
-//    public Timetable getTimetableFromDB(LocalDate date, LocalTime time) {
-//        Optional<Timetable> optionalTimetable = timetableRepository.
-//                getTimetableByDateAndTime(date, time);
-//
-//        return optionalTimetable.orElseThrow(() ->
-//                new CommonBackendException("Timetable not found", HttpStatus.NOT_FOUND));
-//    }
 
     public void isValidDate(String date) {
         try {
@@ -53,7 +47,7 @@ public class TimetableService {
 
     public void isValidTime(String time) {
         try {
-            LocalDate.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+            LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
         } catch (DateTimeParseException e) {
             throw new CommonBackendException("Invalid time", HttpStatus.BAD_REQUEST);
         }
@@ -126,10 +120,13 @@ public class TimetableService {
             return mapper.convertValue(existingTimetable, TimetableInfoResp.class);
         }
 
+        timetableFromDB.setStatusTimetable(StatusTimetable.FREE);
+
         timetables.add(timetableFromDB);
         Doctor doctor = doctorService.updateLinkList(doctorFromDB);
 
-        timetableFromDB.setStatusTimetable(StatusTimetable.FREE);
+        timetableFromDB.setDoctor(doctor);
+        timetableRepository.save(timetableFromDB);
 
         TimetableInfoResp timetableInfoResp = mapper.convertValue(timetableFromDB, TimetableInfoResp.class);
         DoctorInfoResp doctorInfoResp = mapper.convertValue(doctorFromDB, DoctorInfoResp.class);
@@ -148,7 +145,7 @@ public class TimetableService {
                 .collect(Collectors.toList());
     }
 
-    public Page<TimetableInfoResp> getAllTimetables
+    public Page<TimetableInfoResp> getAllFreeTimetables
             (Integer page, Integer perPage, String sort, Sort.Direction order, String filter){
 
         Pageable pageRequest = PaginationUtils.getPageRequest(page, perPage, sort, order);
@@ -158,7 +155,7 @@ public class TimetableService {
         if(StringUtils.hasText(filter)){
             timetables = timetableRepository.findAllFiltered(pageRequest, filter);
         } else {
-            timetables = timetableRepository.findAll(pageRequest);
+            timetables = timetableRepository.findAllFree(pageRequest);
         }
 
         List<TimetableInfoResp> content = timetables.getContent().stream()

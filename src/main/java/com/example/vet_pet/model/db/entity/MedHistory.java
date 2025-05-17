@@ -1,5 +1,6 @@
 package com.example.vet_pet.model.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +18,7 @@ public class MedHistory {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference(value = "pet_medHistories")
     private Pet pet;
 
     @OneToOne(fetch = FetchType.LAZY)

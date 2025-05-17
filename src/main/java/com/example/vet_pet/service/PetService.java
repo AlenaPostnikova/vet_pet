@@ -89,6 +89,9 @@ public class PetService {
         pets.add(petFromDB); //доб питомца в список питомцев пользователя
         User user = userService.updateLinkList(userFromDB); // обновили список питомцев
 
+        petFromDB.setUser(user);
+        petRepository.save(petFromDB);
+
         PetInfoResp petInfoResp = mapper.convertValue(petFromDB, PetInfoResp.class);
         UserInfoResp userInfoResp = mapper.convertValue(userFromDB, UserInfoResp.class);
 

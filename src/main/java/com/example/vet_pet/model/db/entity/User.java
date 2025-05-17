@@ -61,10 +61,12 @@ public class User {
     private Status status;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "user_pets")
     @JoinColumn(name = "user_id")
     private List<Pet> pets;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "user_appointments")
     @JoinColumn(name = "user_id")
     private List<Appointment> appointments;
 }

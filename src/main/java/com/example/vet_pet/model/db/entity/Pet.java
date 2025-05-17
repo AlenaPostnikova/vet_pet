@@ -2,6 +2,7 @@ package com.example.vet_pet.model.db.entity;
 
 import com.example.vet_pet.model.enums.Gender;
 import com.example.vet_pet.model.enums.Status;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,13 +55,16 @@ public class Pet {
     private Status status;
 
     @ManyToOne
+    @JsonBackReference(value = "user_pets")
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "pet_appointments")
     @JoinColumn(name = "pet_id")
     private List<Appointment> appointments;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "pet_medHistories")
     @JoinColumn(name = "pet_id")
     private List<MedHistory> medHistories;
 }

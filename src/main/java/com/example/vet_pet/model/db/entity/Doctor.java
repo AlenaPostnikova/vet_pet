@@ -3,8 +3,7 @@ package com.example.vet_pet.model.db.entity;
 import com.example.vet_pet.model.enums.Gender;
 import com.example.vet_pet.model.enums.SpecializationDoctor;
 import com.example.vet_pet.model.enums.Status;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jdk.jfr.Description;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -67,6 +66,7 @@ public class Doctor {
     private Status status;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "doctor_timetables")
     @JoinColumn(name = "doctor_id")
     private List<Timetable> timetables;
 

@@ -1,6 +1,7 @@
 package com.example.vet_pet.model.db.entity;
 
 import com.example.vet_pet.model.enums.StatusTimetable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,6 +26,7 @@ public class Timetable {
     private String time;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private StatusTimetable statusTimetable;
 
     @CreationTimestamp
@@ -35,7 +37,8 @@ public class Timetable {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "doctor_timetables")
     private Doctor doctor;
 
     @OneToOne(mappedBy = "timetable")

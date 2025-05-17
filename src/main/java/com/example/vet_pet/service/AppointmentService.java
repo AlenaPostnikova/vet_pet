@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j //для логирования
+@Slf4j
 @Service
-@RequiredArgsConstructor //созд. конструктора для инициализации бина
+@RequiredArgsConstructor
 public class AppointmentService {
     private final ObjectMapper mapper;
     private final AppointmentRepository appointmentRepository;
@@ -88,6 +88,9 @@ public class AppointmentService {
         appointments.add(appointmentFromDB);
         User user = userService.updateLinkList(userFromDB);
 
+        appointmentFromDB.setUser(user);
+        appointmentRepository.save(appointmentFromDB);
+
         AppointmentInfoResp appointmentInfoResp = mapper.convertValue(appointmentFromDB, AppointmentInfoResp.class);
         UserInfoResp userInfoResp = mapper.convertValue(userFromDB, UserInfoResp.class);
 
@@ -115,6 +118,9 @@ public class AppointmentService {
 
         appointments.add(appointmentFromDB);
         Pet pet = petService.updateLinkList(petFromDB);
+
+        appointmentFromDB.setPet(pet);
+        appointmentRepository.save(appointmentFromDB);
 
         AppointmentInfoResp appointmentInfoResp = mapper.convertValue(appointmentFromDB, AppointmentInfoResp.class);
         PetInfoResp petInfoResp = mapper.convertValue(petFromDB, PetInfoResp.class);

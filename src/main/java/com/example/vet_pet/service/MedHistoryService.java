@@ -67,6 +67,9 @@ public class MedHistoryService {
         medHistories.add(medHistoryFromDB);
         Pet pet = petService.updateLinkList(petFromDB);
 
+        medHistoryFromDB.setPet(pet);
+        medHistoryRepository.save(medHistoryFromDB);
+
         MedHistoryInfoResp medHistoryInfoResp = mapper.convertValue(medHistoryFromDB, MedHistoryInfoResp.class);
         PetInfoResp petInfoResp = mapper.convertValue(petFromDB, PetInfoResp.class);
 

@@ -1,12 +1,11 @@
 package com.example.vet_pet.model.db.entity;
 
 import com.example.vet_pet.model.enums.StatusAppointment;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -25,9 +24,11 @@ public class Appointment {
     private Timetable timetable;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "user_appointments")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "pet_appointments")
     private Pet pet;
 
     @OneToOne(mappedBy = "appointment")

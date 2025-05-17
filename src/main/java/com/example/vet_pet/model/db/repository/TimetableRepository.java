@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +19,11 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long> {
     @Query("select d.timetables from Doctor d where d.id = :doctorId")
     List<Timetable> getDoctorTimetables(@Param("doctorId") Long doctorId);
 
-    @Query("select t from Timetable t where t.date like %:filter% or t.time like %:filter%")
+    @Query("select t from Timetable t where (t.date like %:filter% or t.time like %:filter%) " +
+            "and t.statusTimetable = 'FREE'")
     Page<Timetable> findAllFiltered(Pageable pageRequest, @Param("filter") String filter);
+
+    @Query("select t from Timetable t where t.statusTimetable = 'FREE'")
+    Page<Timetable> findAllFree(Pageable pageRequest);
 
 }

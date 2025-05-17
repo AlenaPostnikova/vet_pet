@@ -63,7 +63,7 @@ public class TimetableController {
                                                     @RequestParam(defaultValue = "date") String sort,
                                                     @RequestParam(defaultValue = "ASC") Sort.Direction order,
                                                     @RequestParam(required = false) String filter){
-        return timetableService.getAllTimetables(page, perPage, sort, order, filter);
+        return timetableService.getAllFreeTimetables(page, perPage, sort, order, filter);
     }
 
 }

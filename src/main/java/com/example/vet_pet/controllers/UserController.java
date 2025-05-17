@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -53,4 +54,5 @@ public class UserController {
             return userService.getAllUsers(page, perPage, sort, order, filter);
         }
 
-    }
+
+}
