@@ -1,6 +1,5 @@
 package com.example.vet_pet.controllers;
 
-
 import com.example.vet_pet.model.dto.response.AppointmentInfoResp;
 import com.example.vet_pet.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;

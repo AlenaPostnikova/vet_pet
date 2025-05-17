@@ -44,7 +44,7 @@ public class MedHistoryService {
 
         MedHistory medHistory = mapper.convertValue(req, MedHistory.class);
 
-        MedHistory save = medHistoryRepository.save(medHistory); //сохранили в базу данных
+        MedHistory save = medHistoryRepository.save(medHistory);
         return mapper.convertValue(save, MedHistoryInfoResp.class);
     }
 

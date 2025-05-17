@@ -34,6 +34,4 @@ public class MedHistoryController {
     public MedHistoryInfoResp linkMedHistoryAndAppointment(@PathVariable Long medHistoryId, @PathVariable Long appointmentId) {
         return medHistoryService.linkMedHistoryAndAppointment(medHistoryId, appointmentId);
     }
-
-
 }

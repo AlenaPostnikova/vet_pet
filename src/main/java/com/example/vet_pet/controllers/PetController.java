@@ -60,6 +60,4 @@ public class PetController {
     public List<PetInfoResp> getMyPets(@PathVariable Long id){
         return petService.getUserPets(id);
     }
-
-
 }

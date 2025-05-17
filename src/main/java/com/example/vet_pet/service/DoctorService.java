@@ -5,6 +5,7 @@ import com.example.vet_pet.model.dto.request.DoctorInfoReq;
 import com.example.vet_pet.exeption.CommonBackendException;
 import com.example.vet_pet.model.db.repository.DoctorRepository;
 import com.example.vet_pet.model.dto.response.DoctorInfoResp;
+import com.example.vet_pet.model.enums.Roles;
 import com.example.vet_pet.model.enums.Status;
 import com.example.vet_pet.utils.PaginationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,27 +24,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j //для логирования
+@Slf4j
 @Service
-@RequiredArgsConstructor //созд. конструктора для инициализации бина
+@RequiredArgsConstructor
 public class DoctorService {
     private final ObjectMapper mapper;
     private final DoctorRepository doctorRepository;
 
     public DoctorInfoResp addDoctor(DoctorInfoReq req) {
 
-        if (!EmailValidator.getInstance().isValid(req.getEmail())) { //проверка на валидность маила
+        if (!EmailValidator.getInstance().isValid(req.getEmail())) {
             throw new CommonBackendException("Email invalid", HttpStatus.BAD_REQUEST);
         }
 
-        doctorRepository.findByEmail(req.getEmail()).ifPresent(d -> { //проверка нет ли ветеринара с таким маилом
+        doctorRepository.findByEmail(req.getEmail()).ifPresent(d -> {
             throw new CommonBackendException("Doctor already exists", HttpStatus.CONFLICT);
         });
 
-        Doctor doctor = mapper.convertValue(req, Doctor.class); //преобразуем запрос в Ветеринара-сущность
-        doctor.setStatus(Status.CREATED); //присваиваем статус
+        Doctor doctor = mapper.convertValue(req, Doctor.class);
+        doctor.setStatus(Status.CREATED);
+        doctor.setRole(Roles.ROLE_DOCTOR);
 
-        Doctor saveDoctor = doctorRepository.save(doctor); //сохранили в базу данных
+        Doctor saveDoctor = doctorRepository.save(doctor);
         return mapper.convertValue(saveDoctor, DoctorInfoResp.class);
     }
 

@@ -28,7 +28,6 @@ public class AppointmentService {
     private final TimetableService timetableService;
     private final UserService userService;
     private final PetService petService;
-    private final DoctorService doctorService;
 
     public Appointment getAppointmentFromDB(Long id) {
         Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
@@ -132,7 +131,7 @@ public class AppointmentService {
 
     public List<AppointmentInfoResp> getUserAppointments(Long userId){
 
-        User user = userService.getUserFromDB(userId); //чтобы выбросить исключение, если пользователь не найден
+        User user = userService.getUserFromDB(userId);
 
         return appointmentRepository.getUserAppointments(userId).stream()
                 .map(a -> mapper.convertValue(a, AppointmentInfoResp.class))
@@ -141,7 +140,7 @@ public class AppointmentService {
 
     public List<AppointmentInfoResp> getPetAppointments(Long petId){
 
-        Pet pet = petService.getPetFromDB(petId); //чтобы выбросить исключение, если питомец не найден
+        Pet pet = petService.getPetFromDB(petId);
 
         return appointmentRepository.getPetAppointments(petId).stream()
                 .map(a -> mapper.convertValue(a, AppointmentInfoResp.class))
@@ -153,9 +152,5 @@ public class AppointmentService {
         Appointment appointment = getAppointmentFromDB(id);
         appointment.setStatus(StatusAppointment.CANCEL);
         appointment = appointmentRepository.save(appointment);
-    }
-
-    public Appointment updateLinkList(Appointment updatedAppointment) {
-        return appointmentRepository.save(updatedAppointment);
     }
 }

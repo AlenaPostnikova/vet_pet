@@ -28,9 +28,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j //для логирования
+@Slf4j
 @Service
-@RequiredArgsConstructor //созд. конструктора для инициализации бина
+@RequiredArgsConstructor
 public class TimetableService {
     private final ObjectMapper mapper;
     private final TimetableRepository timetableRepository;
@@ -73,7 +73,7 @@ public class TimetableService {
 
     public TimetableInfoResp addTimetable(TimetableInfoReq req) {
 
-        timetableRepository.getTimetableByDateAndTime(req.getDate(), req.getTime()).ifPresent(t -> { //проверка нет ли такой записи расписания
+        timetableRepository.getTimetableByDateAndTime(req.getDate(), req.getTime()).ifPresent(t -> {
             throw new CommonBackendException("Timetable already exists", HttpStatus.CONFLICT);
         });
 

@@ -15,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 
 @RestController
 @RequestMapping("/doctors")
@@ -63,5 +62,4 @@ public class DoctorController {
                                               @RequestParam(required = false) String filter){
         return doctorService.getAllDoctors(page, perPage, sort, order, filter);
     }
-
 }

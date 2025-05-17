@@ -19,13 +19,13 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@SecurityRequirement(name = AUTHORIZATION)
 @Tag(name = "Пользователи")
 public class UserController {
     private final UserService userService;
 
         @GetMapping("/{id}")
-        @Operation(summary = "Получить пользователя по id")
+        @Operation(summary = "Получить пользователя по id",
+                security = @SecurityRequirement(name = AUTHORIZATION))
         public UserInfoResp getUser(@PathVariable Long id){
             return userService.getUser(id);
         }
@@ -37,27 +37,33 @@ public class UserController {
         }
 
         @PostMapping
-        @Operation(summary = "Создать пользователя")
+        @Operation(summary = "Создать пользователя",
+                security = @SecurityRequirement(name = AUTHORIZATION))
         @PreAuthorize("hasAuthority('ROLE_ADMIN')")
         public UserInfoResp addUser(@RequestBody UserInfoReq req){
             return userService.addUser(req);
         }
 
         @PutMapping("/{id}")
-        @Operation(summary = "Обновить данные пользователя по id")
+        @Operation(summary = "Обновить данные пользователя по id",
+                security = @SecurityRequirement(name = AUTHORIZATION))
         public UserInfoResp updateUser(@PathVariable Long id, @RequestBody UserInfoReq req){
             return userService.updateUser(id, req);
         }
 
         @DeleteMapping("/{id}")
-        @Operation(summary = "Удалить пользователя по id")
+        @Operation(summary = "Удалить пользователя по id",
+                security = @SecurityRequirement(name = AUTHORIZATION))
+        @PreAuthorize("hasAuthority('ROLE_ADMIN')")
         public void deleteUser(@PathVariable Long id){
             userService.deleteUser(id);
         }
 
 
         @GetMapping("/all")
-        @Operation(summary = "Получить список всех пользователей")
+        @Operation(summary = "Получить список всех пользователей",
+                security = @SecurityRequirement(name = AUTHORIZATION))
+        @PreAuthorize("hasAuthority('ROLE_ADMIN')")
         public Page<UserInfoResp> getAllUsers(@RequestParam(defaultValue = "1") Integer page,
                                               @RequestParam(defaultValue = "10") Integer perPage,
                                               @RequestParam(defaultValue = "firstName") String sort,

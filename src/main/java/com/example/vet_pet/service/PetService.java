@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PetService {
-    private final ObjectMapper mapper; //для преобразования объектов java в JSON
+    private final ObjectMapper mapper;
     private final PetRepository petRepository;
     private final UserService userService;
 
@@ -71,7 +71,7 @@ public class PetService {
         pet = petRepository.save(pet);
     }
 
-    public PetInfoResp linkPetAndUser(Long petId, Long userId){ //привязка питомца к пользователю
+    public PetInfoResp linkPetAndUser(Long petId, Long userId){
         Pet petFromDB = getPetFromDB(petId);
         User userFromDB = userService.getUserFromDB(userId);
 
@@ -86,8 +86,8 @@ public class PetService {
             return mapper.convertValue(existingPet, PetInfoResp.class);
         }
 
-        pets.add(petFromDB); //доб питомца в список питомцев пользователя
-        User user = userService.updateLinkList(userFromDB); // обновили список питомцев
+        pets.add(petFromDB);
+        User user = userService.updateLinkList(userFromDB);
 
         petFromDB.setUser(user);
         petRepository.save(petFromDB);
@@ -102,7 +102,7 @@ public class PetService {
 
     public List<PetInfoResp> getUserPets(Long userId){
 
-        User user = userService.getUserFromDB(userId); //чтобы выбросить исключение, если пользователь не найден
+        User user = userService.getUserFromDB(userId);
 
         return petRepository.getUserPets(userId).stream()
                 .map(pet -> mapper.convertValue(pet, PetInfoResp.class))

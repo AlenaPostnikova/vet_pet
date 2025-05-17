@@ -5,6 +5,7 @@ import com.example.vet_pet.model.db.entity.User;
 import com.example.vet_pet.model.dto.response.UserInfoResp;
 import com.example.vet_pet.model.db.repository.UserRepository;
 import com.example.vet_pet.model.dto.request.UserInfoReq;
+import com.example.vet_pet.model.enums.Roles;
 import com.example.vet_pet.model.enums.Status;
 import com.example.vet_pet.utils.PaginationUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-@Slf4j //для логирования
+@Slf4j
 @Service
-@RequiredArgsConstructor //созд. конструктора для инициализации бина
+@RequiredArgsConstructor
 public class UserService {
         private final ObjectMapper mapper;
         private final UserRepository userRepository;
@@ -65,17 +66,18 @@ public class UserService {
 
         isValidEmail(req.getEmail());
 
-        userRepository.findByEmail(req.getEmail()).ifPresent(u -> { //проверка нет ли пользователя с таким маилом
+        userRepository.findByEmail(req.getEmail()).ifPresent(u -> {
             throw new CommonBackendException("User already exists", HttpStatus.CONFLICT);
         });
 
         String hashPassword = BCrypt.hashpw(req.getPassword(), BCrypt.gensalt());
 
-        User user = mapper.convertValue(req, User.class); //преобразуем запрос в Пользователя-сущность
-        user.setStatus(Status.CREATED); //присваиваем статус
+        User user = mapper.convertValue(req, User.class);
+        user.setStatus(Status.CREATED);
+        user.setRole(Roles.ROLE_USER);
         user.setPassword(hashPassword);
 
-        User save = userRepository.save(user); //сохранили в базу данных
+        User save = userRepository.save(user);
         return mapper.convertValue(save, UserInfoResp.class);
     }
 

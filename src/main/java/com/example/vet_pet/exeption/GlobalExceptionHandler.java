@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         };
     }
 
-    @ExceptionHandler(MissingServletRequestParameterException.class) //отсутствует параметр запроса
+    @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorMessage> handleMissingParams(MissingServletRequestParameterException ex){
         String parameter =ex.getParameterName();
         log.error("{} parameter is missing", parameter);
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorMessage(String.format("parameter is missing: %s", parameter)));
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class) //несоответствие типа аргумента
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorMessage> handleMismatchType(MethodArgumentTypeMismatchException ex) {
         String parameter = ex.getParameter().getParameterName();
         log.error("wrong data type for parameter: {}", parameter);
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorMessage(String.format("wrong data type for parameter: %s", parameter)));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class) //невалидное значение параметра
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessage> handleMismatchType(MethodArgumentNotValidException ex) {
         FieldError fieldError = ex.getFieldError();
         String message = fieldError != null ? fieldError.getField() + " " + fieldError.getDefaultMessage() : ex.getMessage();

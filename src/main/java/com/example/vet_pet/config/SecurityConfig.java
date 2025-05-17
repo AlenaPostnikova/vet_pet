@@ -31,7 +31,6 @@ public class SecurityConfig {
             "/v3/api-docs/**"
     };
 
-
     @Order(1)
     @Configuration
     public class SwaggerConfiguration extends WebSecurityConfigurerAdapter {
@@ -99,6 +98,5 @@ public class SecurityConfig {
                     .antMatchers(DELETE, "/users/**").hasAnyAuthority("ROLE_ADMIN")
                     .anyRequest().authenticated();
         }
-
     }
 }
