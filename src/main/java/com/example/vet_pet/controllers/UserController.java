@@ -30,6 +30,12 @@ public class UserController {
             return userService.getUser(id);
         }
 
+        @PostMapping("/authorization")
+        @Operation(summary = "Вход для пользователя")
+        public UserInfoResp checkPassword(@RequestBody UserInfoReq req){
+            return userService.checkPassword(req.getEmail(), req.getPassword());
+        }
+
         @PostMapping
         @Operation(summary = "Создать пользователя")
         @PreAuthorize("hasAuthority('ROLE_ADMIN')")

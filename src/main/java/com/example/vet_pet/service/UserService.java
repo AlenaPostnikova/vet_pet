@@ -79,12 +79,14 @@ public class UserService {
         return mapper.convertValue(save, UserInfoResp.class);
     }
 
-    public void checkPassword(String email, String userPassword) {
+    public UserInfoResp checkPassword(String email, String userPassword) {
 
         User user = getUserFromDB(email);
 
         if (!BCrypt.checkpw(userPassword, user.getPassword()))
             throw new CommonBackendException("Secret is incorrect", HttpStatus.FORBIDDEN);
+
+        return mapper.convertValue(user, UserInfoResp.class);
     }
 
 
